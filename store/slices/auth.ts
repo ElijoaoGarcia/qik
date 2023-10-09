@@ -4,6 +4,7 @@ import type { IProfile } from '../../interfaces/profile'
 import { authServices } from '../../services/auth'
 import { authThunkActions } from '../thunk-actions/auth'
 import { profile, signin } from '../../constants/thunk-actions'
+import { PURGE } from 'redux-persist'
 
 interface state extends InitialState {
   profile: IProfile
@@ -22,6 +23,12 @@ export const authSlice = createSlice({
   name: 'authSlice',
   reducers: {},
   extraReducers: ({ addCase }) => {
+    // clear on logout (persit store)
+    addCase(PURGE, (state) => {
+      state.profile = authServices.mockProfile()
+      state.sessionId = ''
+    })
+
     addCase(authThunkActions.signin.pending, (state) => {
       storeCommonActions.pushLoadingId(state, signin)
     })

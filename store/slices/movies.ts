@@ -3,6 +3,7 @@ import { storeCommonActions, type InitialState, type RootState } from '../app'
 import type { IMovie } from '../../interfaces/movie'
 import { moviesThunkActions } from '../thunk-actions/movies'
 import { favorites, nowPlaying } from '../../constants/thunk-actions'
+import { PURGE } from 'redux-persist'
 
 interface State extends InitialState {
   movies: IMovie[]
@@ -20,6 +21,11 @@ export const moviesSlice = createSlice({
   name: 'moviesSlice',
   reducers: {},
   extraReducers: ({ addCase }) => {
+    // clear on logout (persit store)
+    addCase(PURGE, (state) => {
+      state.favorites = []
+    })
+
     // handling now playing
     addCase(moviesThunkActions.nowPlaying.pending, (state) => {
       storeCommonActions.pushLoadingId(state, nowPlaying)
