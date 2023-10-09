@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { storeCommonActions, type InitialState, type RootState } from '../app'
-import { type IProfile } from '../../interfaces/profile'
+import type { IProfile } from '../../interfaces/profile'
 import { authServices } from '../../services/auth'
 import { authThunkActions } from '../thunk-actions/auth'
 import { profile, signin } from '../../constants/thunk-actions'
