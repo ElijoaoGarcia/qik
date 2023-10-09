@@ -8,5 +8,26 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+  ],
+  "baseUrl": ".",
+  "paths": {
+    "@app/*": [
+      "app/*"
+    ],
+    "@components/*": [
+      "components/*"
+    ],
+    "@interfaces/*": [
+      "interfaces/*"
+    ],
+    "@services/*": [
+      "services/*"
+    ],
+    "@thunk-actions/*": [
+      "store/thunk-actions/*"
+    ],
+    "@slices/*": [
+      "store/slices/*"
+    ],
+  }
 }

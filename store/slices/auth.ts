@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { storeCommonActions, type InitialState, type RootState } from '../app'
+import { storeCommonActions, type InitialState } from '../utils'
 import type { IProfile } from '../../interfaces/profile'
 import { authServices } from '../../services/auth'
 import { authThunkActions } from '../thunk-actions/auth'
@@ -55,4 +55,3 @@ export const authSlice = createSlice({
 
 export const authReducer = authSlice.reducer
 export const authSliceActions = authSlice.actions
-export const selectAuth = (state: RootState) => state.authReducer

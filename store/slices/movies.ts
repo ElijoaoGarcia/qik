@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { storeCommonActions, type InitialState, type RootState } from '../app'
+import { storeCommonActions, type InitialState } from '../utils'
 import type { IMovie } from '../../interfaces/movie'
 import { moviesThunkActions } from '../thunk-actions/movies'
 import { favorites, nowPlaying } from '../../constants/thunk-actions'
@@ -54,4 +54,3 @@ export const moviesSlice = createSlice({
 
 export const moviesReducer = moviesSlice.reducer
 export const moviesSliceActions = moviesSlice.actions
-export const selectMovies = (state: RootState) => state.moviesReducer

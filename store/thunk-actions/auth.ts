@@ -3,7 +3,7 @@ import { authServices } from '../../services/auth'
 
 const signin = createAsyncThunk(
   'auth/signin',
-  async ({ username, password }: { username: string, password: string }, { dispatch }) => {
+  async ({ username, password }: { username: string, password: string }) => {
     const sessionId = await authServices.signin(username, password)
     return sessionId
   }
