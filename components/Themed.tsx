@@ -2,6 +2,10 @@ import type { FC } from 'react'
 import { Text as DefaultText, View as DefaultView } from 'react-native'
 import { useColors } from '../hooks'
 
+export {
+  DefaultText,
+  DefaultView
+}
 export const Text: FC<DefaultText['props']> = ({ style, ...props }) => {
   const colors = useColors()
 

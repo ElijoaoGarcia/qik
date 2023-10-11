@@ -20,7 +20,7 @@ const recommendations = createAsyncThunk(
 
 const favorites = createAsyncThunk(
   'movies/favorites',
-  async (sessionId: number) => {
+  async (sessionId: string) => {
     const movies = await moviesServices.favorites(sessionId)
     return movies
   }
@@ -28,9 +28,17 @@ const favorites = createAsyncThunk(
 
 const addFavorites = createAsyncThunk(
   'movies/addFavorites',
-  async ({ sessionId, movie }: { sessionId: string, movie: IMovie }) => {
-    const result = await moviesServices.addFavorite(sessionId, movie)
+  async ({ sessionId, movie, favorite }: { sessionId: string, movie: IMovie, favorite: boolean }) => {
+    const result = await moviesServices.addFavorite(sessionId, movie, favorite)
     return result
+  }
+)
+
+const credits = createAsyncThunk(
+  'movie/credits',
+  async (movie: IMovie) => {
+    const credits = await moviesServices.credits(movie)
+    return credits
   }
 )
 
@@ -38,5 +46,6 @@ export const moviesThunkActions = {
   nowPlaying,
   recommendations,
   favorites,
-  addFavorites
+  addFavorites,
+  credits
 }

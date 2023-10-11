@@ -3,7 +3,7 @@ import { storeCommonActions, type InitialState } from '../utils'
 import type { IProfile } from '../../interfaces/profile'
 import { authServices } from '../../services/auth'
 import { authThunkActions } from '../thunk-actions/auth'
-import { profile, signin } from '../../constants/thunk-actions'
+import { PROFILE, SIGNIN } from '../../constants/thunk-actions'
 import { PURGE } from 'redux-persist'
 
 interface state extends InitialState {
@@ -30,25 +30,25 @@ export const authSlice = createSlice({
     })
 
     addCase(authThunkActions.signin.pending, (state) => {
-      storeCommonActions.pushLoadingId(state, signin)
+      storeCommonActions.pushLoadingId(state, SIGNIN)
     })
     addCase(authThunkActions.signin.fulfilled, (state, action) => {
       state.sessionId = action.payload
-      storeCommonActions.removeLoadingId(state, signin)
+      storeCommonActions.removeLoadingId(state, SIGNIN)
     })
     addCase(authThunkActions.signin.rejected, (state) => {
-      storeCommonActions.removeLoadingId(state, signin)
+      storeCommonActions.removeLoadingId(state, SIGNIN)
     })
 
     addCase(authThunkActions.profile.pending, (state) => {
-      storeCommonActions.pushLoadingId(state, profile)
+      storeCommonActions.pushLoadingId(state, PROFILE)
     })
     addCase(authThunkActions.profile.fulfilled, (state, action) => {
       state.profile = action.payload
-      storeCommonActions.removeLoadingId(state, profile)
+      storeCommonActions.removeLoadingId(state, PROFILE)
     })
     addCase(authThunkActions.profile.rejected, (state) => {
-      storeCommonActions.removeLoadingId(state, profile)
+      storeCommonActions.removeLoadingId(state, PROFILE)
     })
   }
 })

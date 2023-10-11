@@ -2,8 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 import { storeCommonActions, type InitialState } from '../utils'
 import type { IMovie } from '../../interfaces/movie'
 import { moviesThunkActions } from '../thunk-actions/movies'
-import { favorites, nowPlaying } from '../../constants/thunk-actions'
+import { ADDFAVORITES, FAVORITES, NOWPLAYING } from '../../constants/thunk-actions'
 import { PURGE } from 'redux-persist'
+import utils from '../../services/utils'
 
 interface State extends InitialState {
   movies: IMovie[]
@@ -28,26 +29,44 @@ export const moviesSlice = createSlice({
 
     // handling now playing
     addCase(moviesThunkActions.nowPlaying.pending, (state) => {
-      storeCommonActions.pushLoadingId(state, nowPlaying)
+      storeCommonActions.pushLoadingId(state, NOWPLAYING)
     })
     addCase(moviesThunkActions.nowPlaying.fulfilled, (state, action) => {
-      state.movies = action.payload
-      storeCommonActions.removeLoadingId(state, nowPlaying)
+      state.movies = utils.sortMovies(action.payload)
+      storeCommonActions.removeLoadingId(state, NOWPLAYING)
     })
     addCase(moviesThunkActions.nowPlaying.rejected, (state) => {
-      storeCommonActions.removeLoadingId(state, nowPlaying)
+      storeCommonActions.removeLoadingId(state, NOWPLAYING)
     })
 
     // handling favorites
     addCase(moviesThunkActions.favorites.pending, (state) => {
-      storeCommonActions.pushLoadingId(state, favorites)
+      storeCommonActions.pushLoadingId(state, FAVORITES)
     })
     addCase(moviesThunkActions.favorites.fulfilled, (state, action) => {
-      state.favorites = action.payload
-      storeCommonActions.removeLoadingId(state, favorites)
+      state.favorites = utils.sortMovies(action.payload)
+      storeCommonActions.removeLoadingId(state, FAVORITES)
     })
     addCase(moviesThunkActions.favorites.rejected, (state) => {
-      storeCommonActions.removeLoadingId(state, favorites)
+      storeCommonActions.removeLoadingId(state, FAVORITES)
+    })
+
+    addCase(moviesThunkActions.addFavorites.pending, (state, action) => {
+      storeCommonActions.pushLoadingId(state, `${action.meta.arg.movie.id}`)
+    })
+    addCase(moviesThunkActions.addFavorites.fulfilled, (state, action) => {
+      const { movie, favorite } = action.meta.arg
+
+      if (favorite) state.favorites.push(movie)
+      else {
+        const index = state.favorites.findIndex(({ id }) => movie.id === id)
+        if (index > -1) state.favorites.splice(index, 1)
+      }
+
+      storeCommonActions.removeLoadingId(state, `${movie.id}`)
+    })
+    addCase(moviesThunkActions.addFavorites.rejected, (state, action) => {
+      storeCommonActions.removeLoadingId(state, `${action.meta.arg.movie.id}`)
     })
   }
 })

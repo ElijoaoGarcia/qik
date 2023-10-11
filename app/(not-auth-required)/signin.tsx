@@ -8,7 +8,7 @@ import { authThunkActions } from '../../store/thunk-actions/auth'
 import { ScreenContainer } from '../../components/screenContainer'
 import utils from '../../services/utils'
 
-export default function signin () {
+export default function Signin () {
   const dispatch = useAppDispatch()
   const colors = useColors()
   const { isLoading } = useSession()

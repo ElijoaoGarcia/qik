@@ -1,4 +1,4 @@
-import { Redirect, Slot, Stack } from 'expo-router'
+import { Redirect, Stack } from 'expo-router'
 import { useCheckSession } from '../../hooks'
 
 export default function RootLayout () {

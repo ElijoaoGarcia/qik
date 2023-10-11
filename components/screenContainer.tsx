@@ -46,29 +46,31 @@ export const ScreenContainer = ({
   }
 
   return (
-    <SafeAreaView edges={modal ? ['bottom'] : undefined} style={{ flex: 1, backgroundColor: color.background }}>
-        <KeyboardAvoidingView
-            style={[
-              {
-                flex: 1,
-                padding: 10,
-                backgroundColor: color.background,
-                marginBottom: !noPaddingBottom ? (safeAreaInsets.bottom ? 0 : 10) : 0
-              },
-              style
-            ]}
-            behavior={isIos ? 'padding' : 'height'}
-            keyboardVerticalOffset={offSet()}
-        >
+    <SafeAreaView
+      edges={modal ? ['bottom'] : undefined}
+      style={{ flex: 1, backgroundColor: color.background }}
+    >
+      <KeyboardAvoidingView
+        style={[
+          {
+            flex: 1,
+            padding: 10,
+            backgroundColor: color.background,
+            marginBottom: !noPaddingBottom ? (safeAreaInsets.bottom ? 0 : 10) : 0
+          },
+          style
+        ]}
+        behavior={isIos ? 'padding' : 'height'}
+        keyboardVerticalOffset={offSet()}
+      >
 
-            {!disableSafeArea && !isIos
-              ? (<View style={{ height: StatusBar.currentHeight }} />)
-              : null
-            }
+        {!disableSafeArea && !isIos
+          ? (<View style={{ height: StatusBar.currentHeight }} />)
+          : null
+        }
 
-            {children}
-            {/* <View /> */}
-        </KeyboardAvoidingView>
+        {children}
+      </KeyboardAvoidingView>
     </SafeAreaView>
   )
 }

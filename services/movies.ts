@@ -1,4 +1,4 @@
-import type { IMovie } from '../interfaces/movie'
+import type { IMovie, IMovieCredits } from '../interfaces/movie'
 import { RequestSource } from './request-source'
 
 class MoviesServices extends RequestSource {
@@ -41,22 +41,29 @@ class MoviesServices extends RequestSource {
     return req.data.results as IMovie[] || []
   }
 
-  favorites = async (sessionId: number) => {
+  favorites = async (sessionId: string) => {
     const req = await this.httpClient.get(`/account/${sessionId}/favorite/movies?language=en-US&page=1&sort_by=created_at.asc`)
+    console.log('response favorites get:', req.data)
+
     return req.data.results as IMovie[] || []
   }
 
-  addFavorite = async (sessionId: string, movie: IMovie) => {
+  addFavorite = async (sessionId: string, movie: IMovie, favorite: boolean) => {
     await this.httpClient.post(
-        `/account/${sessionId}/favorite`,
-        {
-          media_type: 'movie',
-          media_id: movie.id,
-          favorite: true
-        }
+      `/account/${sessionId}/favorite`,
+      {
+        favorite,
+        media_type: 'movie',
+        media_id: movie.id
+      }
     )
 
     return 'ok'
+  }
+
+  credits = async (movie: IMovie) => {
+    const req = await this.httpClient.get(`/movie/${movie.id}/credits`)
+    return req.data.cast as IMovieCredits || []
   }
 }
 
