@@ -1,0 +1,8 @@
+export const NOWPLAYING = 'nowPlaying'
+export const FAVORITES = 'favorites'
+export const ADDFAVORITES = 'add-favorites'
+export const SIGNIN = 'signin'
+export const PROFILE = 'profile'
+export const CASTING = 'casting'
+export const RATING = 'rating'
+export const RECOMMENDATIONS = 'recommendations'

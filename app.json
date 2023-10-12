@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "movies-app",
+    "name": "Movies",
     "slug": "movies-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -33,7 +33,8 @@
       "expo-router"
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": true,
+      "tsconfigPaths": true
     }
   }
 }
