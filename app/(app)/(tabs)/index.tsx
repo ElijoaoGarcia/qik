@@ -1,36 +1,38 @@
+import { useEffect } from 'react'
 import { Pressable, StyleSheet } from 'react-native'
-import { Text, View } from '../../../components/Themed'
-import { useAppDispatch, useAppSelector, useSession } from '../../../hooks'
-import { ScreenContainer } from '../../../components/screenContainer'
+import { router } from 'expo-router'
 import { List, Spinner } from '@ui-kitten/components'
+import { Text, View } from '../../../components/Themed'
+import { useAppDispatch, useAppSelector } from '../../../hooks'
+import { ScreenContainer } from '../../../components/screenContainer'
 import { selectMovies } from '../../../store/utils'
 import { moviesThunkActions } from '../../../store/thunk-actions/movies'
-import { useEffect } from 'react'
 import { NOWPLAYING } from '../../../constants/thunk-actions'
 import { MovieCard } from '../../../components/movie/movieCard'
 import { RefreshIcon } from '../../../components/icons'
+import type { IMovie } from '../../../interfaces/movie'
 
-export default function TabOneScreen () {
+export default function Home () {
   const dispatch = useAppDispatch()
-  const { sessionId } = useSession()
   const { movies, isLoading, updatingId } = useAppSelector(selectMovies)
 
   const fetchMovies = async () => await dispatch(moviesThunkActions.nowPlaying())
-  const fetchFavoritesMovies = async () => await dispatch(moviesThunkActions.favorites(sessionId))
 
   const isFetchingMovies = isLoading && updatingId.includes(NOWPLAYING)
   const canShowMovies = movies.length > 0
 
+  const onSelectMovie = (movie: IMovie) => router.push(`/movie/${movie.id}`)
+
   useEffect(() => {
     void fetchMovies()
-    void fetchFavoritesMovies()
+    // void fetchFavoritesMovies()
   }, [])
 
   return (
     <ScreenContainer style={styles.container}>
       { isFetchingMovies && !canShowMovies ? (<Spinner />) : null }
 
-      {canShowMovies
+      { canShowMovies
         ? (
           <View style={styles.titleContainer}>
             <Text style={styles.title}>
@@ -41,20 +43,24 @@ export default function TabOneScreen () {
               {isFetchingMovies ? <Spinner /> : <RefreshIcon />}
             </Pressable>
           </View>)
-        : null}
-      {canShowMovies
+        : null }
+
+      { canShowMovies
         ? (
           <List
+            alwaysBounceVertical
+            ListEmptyComponent={() => <Text style={{ textAlign: 'center' }}>No hay peliculas actualmente</Text>}
+            ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
             data={movies}
             style={{ backgroundColor: 'transparent' }}
             renderItem={({ item }) => (
               <MovieCard
-                key={item.id}
                 movie={item}
+                onSelect={onSelectMovie}
               />
             )}
           />)
-        : null}
+        : null }
     </ScreenContainer>
   )
 }

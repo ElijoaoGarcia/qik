@@ -10,6 +10,14 @@ const nowPlaying = createAsyncThunk(
   }
 )
 
+const movie = createAsyncThunk(
+  'movies/movie',
+  async (movieId: string) => {
+    const movie = await moviesServices.movie(movieId)
+    return movie
+  }
+)
+
 const recommendations = createAsyncThunk(
   'movies/recommendations',
   async (id: number) => {
@@ -42,10 +50,38 @@ const credits = createAsyncThunk(
   }
 )
 
+const rated = createAsyncThunk(
+  'movie/rated',
+  async (sessionId: string) => {
+    const movies = await moviesServices.rated(sessionId)
+    return movies
+  }
+)
+
+const addRate = createAsyncThunk(
+  'movie/addRate',
+  async ({ movie, rate }: { movie: IMovie, rate: number }) => {
+    const result = await moviesServices.addRate(movie, rate)
+    return result
+  }
+)
+
+const removeRating = createAsyncThunk(
+  'movie/removeRating',
+  async (movie: IMovie) => {
+    const result = await moviesServices.removeRating(movie)
+    return result
+  }
+)
+
 export const moviesThunkActions = {
   nowPlaying,
+  movie,
   recommendations,
   favorites,
   addFavorites,
-  credits
+  credits,
+  rated,
+  addRate,
+  removeRating
 }

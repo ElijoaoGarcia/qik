@@ -40,13 +40,17 @@ export interface IMovie {
   }>
   status: string
   tagline: string
+  cast?: IMovieCredits[]
+  recommendations?: Array<Omit<IMovie, 'recommendations'>>
+  isRecommended?: boolean
+  rating?: number
 }
 
 export interface IMovieCredits {
   adult: false
   gender: number
   id: number
-  known_for_department: string
+  known_for_department: 'Acting' | 'Crew' | 'Writing' | 'Visual Effects' | 'Crew' | 'Directing'
   name: string
   original_name: string
   popularity: number

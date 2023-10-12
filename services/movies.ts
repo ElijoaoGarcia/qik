@@ -31,21 +31,24 @@ class MoviesServices extends RequestSource {
     tagline: ''
   })
 
-  nowPlaying = async () => {
+  nowPlaying = async (): Promise<IMovie[]> => {
     const req = await this.httpClient.get('/movie/now_playing?language=en-US&page=1')
-    return req.data.results as IMovie[] || []
+    return req.data.results || []
   }
 
-  recommendations = async (id: number) => {
-    const req = await this.httpClient.get(`/movie/${id}/recommendations?language=en-US&page=1`)
-    return req.data.results as IMovie[] || []
+  movie = async (movieId: string): Promise<IMovie> => {
+    const req = await this.httpClient.get(`/movie/${movieId}`)
+    return req.data
   }
 
-  favorites = async (sessionId: string) => {
+  recommendations = async (movieId: number): Promise<IMovie[]> => {
+    const req = await this.httpClient.get(`/movie/${movieId}/recommendations?language=en-US&page=1`)
+    return req.data.results || []
+  }
+
+  favorites = async (sessionId: string): Promise<IMovie[]> => {
     const req = await this.httpClient.get(`/account/${sessionId}/favorite/movies?language=en-US&page=1&sort_by=created_at.asc`)
-    console.log('response favorites get:', req.data)
-
-    return req.data.results as IMovie[] || []
+    return req.data.results || []
   }
 
   addFavorite = async (sessionId: string, movie: IMovie, favorite: boolean) => {
@@ -61,9 +64,30 @@ class MoviesServices extends RequestSource {
     return 'ok'
   }
 
-  credits = async (movie: IMovie) => {
+  credits = async (movie: IMovie): Promise<IMovieCredits[]> => {
+    if (movie.id === 0) return []
+
     const req = await this.httpClient.get(`/movie/${movie.id}/credits`)
-    return req.data.cast as IMovieCredits || []
+    return req.data.cast || []
+  }
+
+  rated = async (sessionId: string): Promise<IMovie[]> => {
+    const req = await this.httpClient.get(`/account/${sessionId}/rated/movies`)
+    return req.data.results || []
+  }
+
+  addRate = async (movie: IMovie, value: number) => {
+    await this.httpClient.post(
+      `/movie/${movie.id}/rating`,
+      { value }
+    )
+
+    return 'ok'
+  }
+
+  removeRating = async (movie: IMovie) => {
+    await this.httpClient.delete(`/movie/${movie.id}/rating`)
+    return 'ok'
   }
 }
 

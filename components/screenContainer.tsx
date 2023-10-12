@@ -7,6 +7,7 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useColors } from '../hooks'
 import { View } from './Themed'
+import { type FC, type ReactNode } from 'react'
 
 interface ScreenContainerProps {
   children: DView['props']['children']
@@ -16,15 +17,47 @@ interface ScreenContainerProps {
   noPaddingBottom?: boolean
 }
 
-export const ScreenContainer = ({
+interface DisableSafeAreaProps {
+  disable?: boolean
+  modal?: boolean
+  children: ReactNode
+}
+const DisableSafeArea: FC<DisableSafeAreaProps> = ({
+  children,
+  modal = false,
+  disable = false
+}) => {
+  const color = useColors()
+  const styleContainer = { flex: 1, backgroundColor: color.background }
+
+  if (disable) {
+    return (
+      <View style={styleContainer}>
+        {children}
+      </View>
+    )
+  }
+
+  return (
+    <SafeAreaView
+      edges={modal ? ['bottom'] : undefined}
+      style={styleContainer}
+    >
+      {children}
+    </SafeAreaView>
+  )
+}
+
+export const ScreenContainer: FC<ScreenContainerProps> = ({
   children, style,
   disableSafeArea,
   modal, noPaddingBottom = false
-}: ScreenContainerProps) => {
+}) => {
   const color = useColors()
   const safeAreaInsets = useSafeAreaInsets()
 
   const isIos = Platform.OS === 'ios'
+  const isAndroid = Platform.OS === 'android'
 
   const offSet = () => {
     const { bottom } = safeAreaInsets
@@ -46,9 +79,9 @@ export const ScreenContainer = ({
   }
 
   return (
-    <SafeAreaView
-      edges={modal ? ['bottom'] : undefined}
-      style={{ flex: 1, backgroundColor: color.background }}
+    <DisableSafeArea
+      modal={modal}
+      disable={disableSafeArea}
     >
       <KeyboardAvoidingView
         style={[
@@ -64,14 +97,14 @@ export const ScreenContainer = ({
         keyboardVerticalOffset={offSet()}
       >
 
-        {!disableSafeArea && !isIos
+        {!disableSafeArea && isAndroid
           ? (<View style={{ height: StatusBar.currentHeight }} />)
           : null
         }
 
         {children}
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </DisableSafeArea>
   )
 }
 

@@ -11,7 +11,7 @@ interface Props {
   noBorderRaduis?: boolean
 }
 
-const Avatar: FC<Props> = ({ size = 130, uri, style, noBorderRaduis = false }) => {
+export const Avatar: FC<Props> = ({ size = 130, uri, style, noBorderRaduis = false }) => {
   return (
     <View style={[
       {
@@ -23,6 +23,7 @@ const Avatar: FC<Props> = ({ size = 130, uri, style, noBorderRaduis = false }) =
     ]}>
       <Image
         source={uri ? { uri } : defaultImage}
+        resizeMode='cover'
         style={[styles.image, { borderRadius: noBorderRaduis ? 0 : size }]}
       />
     </View>
@@ -31,8 +32,7 @@ const Avatar: FC<Props> = ({ size = 130, uri, style, noBorderRaduis = false }) =
 
 const styles = StyleSheet.create({
   image: {
-    flex: 1,
-    resizeMode: 'cover'
+    flex: 1
   }
 })
 
