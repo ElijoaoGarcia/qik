@@ -13,7 +13,7 @@ The sign in screen require a valid username and password (themoviedb.org account
 * username: **ElijoaoG**
 * password: **wyfko4-defpeh-Tahreg**
 
-### Node version required
+### Required node version
 
 ```console
 16
