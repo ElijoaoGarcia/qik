@@ -16,11 +16,17 @@ The sign in screen require a valid username and password (themoviedb.org account
 ### Install dependencies
 
 ```console
-yarn install
+node version 16
+```
+
+### Install dependencies
+
+```console
+npm install
 ```
 
 ### Run the project
 
 ```console
-yarn dev
+npm run dev
 ```
